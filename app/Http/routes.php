@@ -11,11 +11,10 @@ Route::group(['middleware' => ['web']], function () {
   Route::post('/book/create', 'BookController@postCreate');
   Route::get('/book/{id}', 'BookController@getShow');
 
-  Route::get('/practice', function(){
+  Route::get('/practice', function() {
 
-    echo config('app.url');
-
+      $random = new Rych\Random\Random();
+      return $random->getRandomString(8);
 
   });
-
 });
