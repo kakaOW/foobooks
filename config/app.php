@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
+    'url' => env('APP_URL', 'http://foobooks.yungwei.me'),
 
     /*
     |--------------------------------------------------------------------------
@@ -151,10 +151,10 @@ return [
         /*
          * Application Service Providers...
          */
-        Foobooks\Providers\AppServiceProvider::class,
-        Foobooks\Providers\AuthServiceProvider::class,
-        Foobooks\Providers\EventServiceProvider::class,
-        Foobooks\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 
