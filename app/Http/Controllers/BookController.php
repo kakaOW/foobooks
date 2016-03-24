@@ -10,14 +10,15 @@ class BookController extends Controller {
   * Responds to requests to GET /books
   */
   public function getIndex() {
-    return 'List all the books';
+    return view('books.index');
   }
 
   /**
   * Responds to requests to GET /books/show/{id}
   */
-  public function getShow($id) {
-    return 'Show and individual book: '.$id;
+  public function getShow($title = null) {
+    return view('books.show')->with('title', $title);
+    // return view('books.show',['title' => $title]);
   }
 
   /**
@@ -25,19 +26,20 @@ class BookController extends Controller {
   */
   public function getCreate() {
 
-    $view = '<form method="POST" action="/book/create">';
-    $view .= csrf_field();
-    $view .= 'Book title: <input type="text" name="title">';
-    $view .= '<input type="submit">';
-    $view .= '</form>';
-
-    return $view;
+    // $view = '<form method="POST" action="/book/create">';
+    // $view .= csrf_field();
+    // $view .= 'Book title: <input type="text" name="title">';
+    // $view .= '<input type="submit">';
+    // $view .= '</form>';
+    //
+    // return $view;
+    return view('books.create');
   }
 
   /**
   * Responds to requests to POST /books/create
   */
   public function postCreate() {
-    return 'Add the book: '.$_POST['title'];
+    return redirect('/books');
   }
 }
