@@ -1,23 +1,76 @@
 <?php
 
 
-Route::group(['middleware' => ['web']], function () {
-  Route::get('/', function () {
-    return view('layouts.master');
-  });
 
-  Route::get('/books', 'BookController@getIndex');
-  Route::get('/book/create', 'BookController@getCreate');
-  Route::post('/book/create', 'BookController@postCreate');
-  Route::get('/book/show/{title?}', 'BookController@getShow');
+# ------------------------------------
+# Authentication
+# ------------------------------------
+Route::get('/login', 'Auth\AuthController@getLogin');
+Route::post('/login', 'Auth\AuthController@postLogin');
 
-  Route::get('/practice', function() {
+Route::get('/register', 'Auth\AuthController@getRegister');
+Route::post('/register', 'Auth\AuthController@postRegister');
 
-      $random = new Rych\Random\Random();
-      return $random->getRandomString(8);
+Route::get('/logout', 'Auth\AuthController@logout');
 
-  });
+# Debugging route just to show whether you're logged in or not
+Route::get('/show-login-status', function() {
+
+    # You may access the authenticated user via the Auth facade
+    $user = Auth::user();
+
+    if($user) {
+        echo 'You are logged in.';
+        dump($user->toArray());
+    } else {
+        echo 'You are not logged in.';
+    }
+
+    return;
+
 });
+
+
+
+# ------------------------------------
+# Practice routes
+# ------------------------------------
+for($i = 0; $i <= 100; $i++) {
+    Route::get("/practice/ex".$i, "PracticeController@getEx".$i);
+}
+
+
+
+# ------------------------------------
+# Book specific routes
+# ------------------------------------
+Route::get('/', 'BookController@getIndex'); # Home
+Route::get('/books', 'BookController@getIndex');
+
+Route::get('/book/edit/{id?}', 'BookController@getEdit');
+Route::post('/book/edit', 'BookController@postEdit');
+
+Route::get('/book/create', 'BookController@getCreate');
+Route::post('/book/create', 'BookController@postCreate');
+
+Route::get('/book/show/{id?}', 'BookController@getShow');
+
+
+
+# ------------------------------------
+# Misc debug routes
+# ------------------------------------
+# Restrict certain routes to only be viewable in the local environments
+if(App::environment('local')) {
+
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+    Route::get('/drop', function() {
+        DB::statement('DROP database foobooks');
+        DB::statement('CREATE database foobooks');
+        return 'Dropped foobooks; created foobooks.';
+    });
+}
 
 Route::get('/debug', function() {
 
